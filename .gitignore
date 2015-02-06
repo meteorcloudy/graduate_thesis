@@ -6,6 +6,9 @@
 *.fls
 *.out
 *.toc
+*.ttf
+*.ttc
+.DS_Store
 
 ## Intermediate documents:
 *.dvi
