@@ -29,8 +29,10 @@ transform shape]
     }
     child{
         [sibling distance = 10mm] node (4) {}
-            child[edge from parent path = {(\tikzparentnode ) -- (\tikzchildnode) [dashed]}]{
-                node [main node] (5) {$c$}
+            child[dashed]{
+                node (5) {}
+                child[solid]{ node[main node] (7) {$c$}}
+                child[solid]{ node[main node] (8) {$e$}}
             }
             child{
                 node [main node] (6) {$d$}
@@ -39,7 +41,7 @@ transform shape]
 ;
 
 
-\node [edge label, xshift = 0mm, below=25mm, align=flush center] at (0){
+\node [edge label, xshift = 0mm, below=35mm, align=flush center] at (0){
         \scriptsize{$T_1$}};
 \node[edge label,above right = 4mm and 1mm of 2] (final) {};        
 \draw[->,gray] (5) .. controls (-5mm,-27mm) .. (final);
@@ -47,8 +49,8 @@ transform shape]
 
 \begin{tikzpicture}[->]
 \node[edge label] (0) {};
-\node [edge label, above=10mm, align=flush center] (a) at (0){};
-\node [edge label, xshift = 5mm, above=10mm, align=flush center] (b) at (0){};
+\node [edge label, above=12mm, align=flush center] (a) at (0){};
+\node [edge label, xshift = 5mm, above=12mm, align=flush center] (b) at (0){};
 \draw (a) -- (b) node[edge label,left] {};        
 \end{tikzpicture}
 
@@ -66,7 +68,9 @@ transform shape]
                         node [main node] (3) {$a$}
                     }
                     child{
-                        node [main node] (4) {$c$}
+                        node (5) {}
+                        child{ node[main node] (7) {$c$}}
+                        child{ node[main node] (8) {$e$}}
                     }
             }
             child[edge from parent path = {(\tikzparentnode ) -- (\tikzchildnode) [dashed]}]{
@@ -77,7 +81,7 @@ transform shape]
         node [main node] (6) {$d$}
     }
 ;
-\node [edge label, xshift = -6mm, below=35mm, align=flush center] at (0){
+\node [edge label, xshift = -6mm, below=45mm, align=flush center] at (0){
         \scriptsize{$T_2$}};
 \node[edge label,above right = 4mm and -6mm of 6] (final) {};        
 \draw[->,gray] (5) .. controls (3mm,-15mm) .. (final);        
@@ -85,8 +89,8 @@ transform shape]
 
 \begin{tikzpicture}[->]
 \node[edge label] (0) {};
-\node [edge label, above=10mm, align=flush center] (a) at (0){};
-\node [edge label, xshift = 5mm, above=10mm, align=flush center] (b) at (0){};
+\node [edge label, above=12mm, align=flush center] (a) at (0){};
+\node [edge label, xshift = 5mm, above=12mm, align=flush center] (b) at (0){};
 \draw (a) -- (b) node[edge label,left] {};        
 \end{tikzpicture}
 
@@ -102,7 +106,9 @@ transform shape]
                 node [main node] (2) {$a$}
             }
             child{
-                node [main node] (3) {$c$}
+                node (5) {}
+                child{ node[main node] (7) {$c$}}
+                child{ node[main node] (8) {$e$}}
             }
     }
     child{
@@ -115,7 +121,7 @@ transform shape]
             }
     }
 ;
-\node [edge label,xshift = 0mm , below=25mm, align=flush center] at (0){
+\node [edge label,xshift = 0mm , below=35mm, align=flush center] at (0){
         \scriptsize{$T_3$}};
 \end{tikzpicture}
 \end{document}

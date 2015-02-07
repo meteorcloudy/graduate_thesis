@@ -6,7 +6,7 @@
 本节将给出在研究进化树结构的过程中所需要的一些重要概念的定义。
 
 \begin{dingyi}
-\textbf{有根二叉进化树}（简称进化树）是一棵叶节点被集合$X$中的元素所标记的满二叉树，即除叶节点没有子节点外，其余节点都有且仅有两个子节点，记作$T$。将T的所有边的集合记为$E_T$。将\textbf{$X$}称作该进化树的\textbf{标识集}。
+\textbf{有根二叉进化树}（简称进化树）是一棵叶节点被集合$X$中的元素所标记的满二叉树，即除叶节点没有子节点外，其余节点都有且仅有两个子节点，记作$T$。将$T$的所有边的集合记为$E_T$。将\textbf{$X$}称作该进化树的\textbf{标识集}。
 \end{dingyi}
 \pic[htbp]{有根二叉进化树示例}{width=0.8\textwidth}{tree_definition}
 
@@ -21,7 +21,7 @@
 \pic[htbp]{将$T'$收缩得到$T$}{width=0.7\textwidth}{tree_contract}
 
 \begin{dingyi}
-\textbf{子树剪切再接}（rooted subtree prune and regraft，简称rSPR）对于一棵进化树$T$，剪去任意一条边得到一棵子树$t$，将$t$嫁接到余下子树$T-t$的一条边上，并对操作后的树进行一次\textbf{收缩}操作，获得一棵新的进化树，该过程称为一次\textbf{rSPR操作}。对于两棵进化树$T_1,T_2$，将其中一棵树转化为另一棵所需的最少SPR操作次数称为$T_1,T_2$的\textbf{rSPR距离}，记作$d(T_1,T_2)$。
+\textbf{子树剪切再接}（rooted subtree prune and regraft，简称rSPR）对于一棵进化树$T$，剪去任意一条边得到一棵子树$t$，将$t$嫁接到余下子树$T-t$的一条边上，并对操作后的树进行一次\textbf{收缩}，获得一棵新的进化树，该过程称为一次\textbf{rSPR操作}。对于两棵进化树$T_1,T_2$，将其中一棵树转化为另一棵所需的最少rSPR操作次数称为$T_1,T_2$的\textbf{rSPR距离}，记作~$d(T_1,T_2)$~。
 \end{dingyi}
 \pic[htbp]{将$T_1$转化为$T_3$需要至少$2$次SPR操作，$d(T_1,T_3)=2$}{width=0.9\textwidth}{tree_spr}
 
@@ -31,24 +31,40 @@
 \clearpage
 
 \begin{dingyi}
-\textbf{最大一致森林}（maximum-agreement forest，简称MAF）对于两棵进化树$T_1,T_2$，若存在$E_1 \subset E_{T_1}$，$E_2 \subset E_{T_2}$，使得$F=T_1 - E_1$并且$F=T_2 - E_2$，我们称$F$为$T_1,T_2$的\textbf{一致森林}。将$T_1,T_2$的所有一致森林中，包含最少进化树个数的森林成为\textbf{最大一致森林}，其包含的进化树个数记为\textbf{$m(T_1,T_2)$}。
+\textbf{最大一致森林}（maximum-agreement forest，简称MAF）对于两棵进化树$T_1,T_2$，若存在$E_1 \subset E_{T_1}$，$E_2 \subset E_{T_2}$，使得$F=T_1 - E_1$并且$F=T_2 - E_2$，我们称$F$为$T_1,T_2$的\textbf{一致森林}。将$T_1,T_2$的所有一致森林中，包含最少进化树个数的森林称为\textbf{最大一致森林}，其包含的进化树个数记为\textbf{$m(T_1,T_2)$}。
 \end{dingyi}
 \pic[htbp]{将$T_1$和$T_2$删去对应边后获得最大一致森林$F$，$m(T_1,T_2)=3$}{width=0.6\textwidth}{maf}
 
-Bordewich和Semple\citeup{bordewich2005computational}已经发现两棵进化树的rSPR距离与MAF的大小存在着等价关系，他们证明了如下定理：
+Bordewich和Semple\citeup{bordewich2005computational}已经指出两棵进化树的rSPR距离与MAF的大小存在着等价关系，他们证明了如下定理：
 \begin{dingli}
 \label{dingli:1_1}
-对于两棵进化树$T_1,T_2$，存在
+对于两棵具有相同标识集$X$的进化树$T_1,T_2$，存在
 	\begin{equation*}
 		d(T_1,T_2)=m(T_1,T_2)-1
 	\end{equation*}
 \end{dingli}
 
-根据定理\ref{dingli:1_1}我们可以将求解两棵进化树的rSPR距离转化为求解它们的最大一致森林的最优化问题，而因为该问题是NP完全问题，我们可以将其进一步转化为可以用固定参数算法求解的判定性问题，具体描述如下：
+\section{问题描述}\label{problem}
+根据定理\ref{dingli:1_1}我们可以将求解两棵进化树的rSPR距离转化为求解它们的最大一致森林的最优化问题，而因为该问题是NP完全问题，我们可以将其进一步转化为可以用固定参数算法求解的判定性问题，问题的具体描述如下：
+\\
 
+\textbf{给定两个具有相同标识集$X$的进化树$T_1,T_2$，以及一个参数$k$。}
 
+\textbf{判断~$d(T_1,T_2) \le k$~是否成立？}
+\clearpage
 
+\section{相关研究}
+尽管rSPR距离在生物学上具有十分重要的意义，但计算它却被证明是NP难的。因此研究针对该问题的近似算法，参数算法以及一些启发式算法成为了计算rSPR距离的主要手段。在介绍本文提出的参数算法之前，先回顾之前针对此问题各种算法的研究进展。
 
+\subsection{近似算法}
+自从Jotun Hein等人在\cite{hein1996complexity}中引入MAF的概念以来，MAF已经成为解决该问题最有效的工具，不少以此为基础的近似算法得以提出。Hein首先在\cite{hein1996complexity}中提出了一个近似比为3的近似算法，但却被Rodrigues在\cite{rodrigues2007maximum}中证明在某些情况下其近似比不可能小于4。同时，Rodrigues也提出了一些修正，宣称修正后的算法的近似比为3。然而，Bonet在\cite{bonet2006approximating}中给出的反例证明了\cite{hein1996complexity}和\cite{rodrigues2007maximum}中的算法近似比实际上均为5，并且可以在线性时间复杂度下实现。Bordewich在\cite{bordewich20083}中提出了一个正确的近似比为3的算法，然而是以时间复杂度增加到$O(n^5)$为代价\footnote{适当地改进数据结构可以将时间复杂度改进到$O(n^4)$}。在\cite{rodrigues2007maximum}中提出的第二个近似比为3的算法的时间复杂度为$O(n^2)$。最终，线性时间复杂度下近似比为3的算法由Whidden在\cite{whidden2009unifying}中提出。                                                                                                                                                                                                                                                             
+\subsection{参数算法}
+在生物进化过程中网状事件发生的次数远远小于物种的数量，因此固定参数算法往往是计算rSPR距离精确值的最好途径。将两棵进化树的rSPR距离作为参数$k$的参数算法便是一个很有前景的研究方法。以此为基础，Bordewich在\cite{bordewich20083}中提出了一个时间复杂度为$O(4^k \cdot k^5 + n^3)$参数算法。之后，Hallett，Allen，Bonet等人针对该问题的相关问题也有许多有意义的研究。\citeup{hallett2007faster}\citeup{allen2001subtree}\citeup{bonet2010complexity}Whidden在\cite{whidden2010fast}中提出的算法可以说是该问题在参数算法上的一个突破，该算法的时间复杂度为$O(2.42^kn)$，并且从实验结果可以看出其性能远优于先前的算法，有能力处理具有更多节点数更大rSPR距离的进化树对比问题。随后，Chen和Wang在\cite{chen2012faster}中对Whidden的算法中最差的情况进行了许多改进，最后获得了一个时间复杂度为$O(2.34^kn)$的参数算法，但其改进方法分类较多，比较复杂，因此算法实现难度很大。本文也是基于相同的思想，但使用相对更简单的方法得到了更好的改进效果。
+
+\subsection{启发式算法}
+许多关于SPR距离的启发式算法在近年也得以提出，并开发了相关的软件。其中，Hallett和Lagergen开发的程序LatTrans\citeup{hallett2001efficient}针对一些特殊的rSPR操作进行建模，只考虑进化树只可能在两种情况下相异，在这种特殊的条件下，它的时间复杂度可以减少到$O(2^kn^2)$。Macleod开发的HorizStory\citeup{macleod2005deduction}可以计算多叉树的SPR距离，但只考虑SPR操作对象是只有一个叶节点的子树。SPRdist\citeup{bonet2009efficiently}和TreeSAT\citeup{wu2009practical}是两个计算rSPR距离的软件，他们分别把计算MAF的问题转化为整数线性规划问题（integer linear programming, ILP）和可满足性问题（satisfiability problem, SAT），然后利用求解对应问题的有效手段来获得rSPR距离的解。但根据实验结果，它们的性能均不能与Whidden所提出的算法相比。
+
+\subsection{Whidden的参数算法概述}
 
 
 
