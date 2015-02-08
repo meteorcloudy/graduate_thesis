@@ -21,14 +21,14 @@
 \pic[htbp]{将$T'$收缩得到$T$}{width=0.7\textwidth}{tree_contract}
 
 \begin{dingyi}
-\textbf{子树剪切再接}（rooted subtree prune and regraft，简称rSPR）对于一棵进化树$T$，剪去任意一条边得到一棵子树$t$，将$t$嫁接到余下子树$T-t$的一条边上，并对操作后的树进行一次\textbf{收缩}，获得一棵新的进化树，该过程称为一次\textbf{rSPR操作}。对于两棵进化树$T_1,T_2$，将其中一棵树转化为另一棵所需的最少rSPR操作次数称为$T_1,T_2$的\textbf{rSPR距离}，记作~$d(T_1,T_2)$~。
+\textbf{子树剪切再接}（rooted subtree prune and regraft，简称rSPR）对于一棵进化树$T$，剪去任意节点$x$的父边$e_x$得到一棵以$x$为根的子树$t_x$，将$t_x$嫁接到余下子树$T-t_x$的一条边上，并对操作后的树进行一次\textbf{收缩}，获得一棵新的进化树，该过程称为一次\textbf{rSPR操作}。对于两棵进化树$T_1,T_2$，将其中一棵树转化为另一棵所需的最少rSPR操作次数称为$T_1,T_2$的\textbf{rSPR距离}，记作~$d(T_1,T_2)$~。
 \end{dingyi}
 \pic[htbp]{将$T_1$转化为$T_3$需要至少$2$次SPR操作，$d(T_1,T_3)=2$}{width=0.9\textwidth}{tree_spr}
 
 \begin{dingyi}
 \textbf{进化树森林}（简称森林）是由若干棵进化树组成的集合。记作$F=\{t_1,t_2,...,t_n\}$。将一棵进化树$T$删去若干条边$E$，并对每棵独立的子树进行一次收缩操作得到的森林$F$，记作\textbf{$F=T-E$}。同理，将一个森林$F$删去若干条边$E$，并对每棵独立的子树进行一次收缩操作得到的森林$F'$，记作\textbf{$F'=F-E$}。
 \end{dingyi}
-\clearpage
+% \clearpage
 
 \begin{dingyi}
 \textbf{最大一致森林}（maximum-agreement forest，简称MAF）对于两棵进化树$T_1,T_2$，若存在$E_1 \subset E_{T_1}$，$E_2 \subset E_{T_2}$，使得$F=T_1 - E_1$并且$F=T_2 - E_2$，我们称$F$为$T_1,T_2$的\textbf{一致森林}。将$T_1,T_2$的所有一致森林中，包含最少进化树个数的森林称为\textbf{最大一致森林}，其包含的进化树个数记为\textbf{$m(T_1,T_2)$}。
@@ -45,7 +45,7 @@ Bordewich和Semple\citeup{bordewich2005computational}已经指出两棵进化树
 \end{dingli}
 
 \section{问题描述}\label{problem}
-根据定理\ref{dingli:1_1}我们可以将求解两棵进化树的rSPR距离转化为求解它们的最大一致森林的最优化问题，而因为该问题是NP完全问题，我们可以将其进一步转化为可以用固定参数算法求解的判定性问题，问题的具体描述如下：
+根据定理\ref{dingli:1_1}我们可以将求解两棵进化树的rSPR距离转化为求解它们的最大一致森林的最优化问题，$d(T_1,T_2)$也可等价为将$T_1,T_2$转化为它们的MAF所需要删除的最少边数。而因为该问题是NP完全问题，我们可以将其进一步转化为可以用固定参数算法求解的判定性问题，问题的具体描述如下：
 \\
 
 \textbf{给定两个具有相同标识集$X$的进化树$T_1,T_2$，以及一个参数$k$。}
@@ -57,21 +57,32 @@ Bordewich和Semple\citeup{bordewich2005computational}已经指出两棵进化树
 尽管rSPR距离在生物学上具有十分重要的意义，但计算它却被证明是NP难的。因此研究针对该问题的近似算法，参数算法以及一些启发式算法成为了计算rSPR距离的主要手段。在介绍本文提出的参数算法之前，先回顾之前针对此问题各种算法的研究进展。
 
 \subsection{近似算法}
-自从Jotun Hein等人在\cite{hein1996complexity}中引入MAF的概念以来，MAF已经成为解决该问题最有效的工具，不少以此为基础的近似算法得以提出。Hein首先在\cite{hein1996complexity}中提出了一个近似比为3的近似算法，但却被Rodrigues在\cite{rodrigues2007maximum}中证明在某些情况下其近似比不可能小于4。同时，Rodrigues也提出了一些修正，宣称修正后的算法的近似比为3。然而，Bonet在\cite{bonet2006approximating}中给出的反例证明了\cite{hein1996complexity}和\cite{rodrigues2007maximum}中的算法近似比实际上均为5，并且可以在线性时间复杂度下实现。Bordewich在\cite{bordewich20083}中提出了一个正确的近似比为3的算法，然而是以时间复杂度增加到$O(n^5)$为代价\footnote{适当地改进数据结构可以将时间复杂度改进到$O(n^4)$}。在\cite{rodrigues2007maximum}中提出的第二个近似比为3的算法的时间复杂度为$O(n^2)$。最终，线性时间复杂度下近似比为3的算法由Whidden在\cite{whidden2009unifying}中提出。                                                                                                                                                                                                                                                             
+自从Jotun Hein等人在\cite{hein1996complexity}中引入MAF的概念以来，MAF已经成为解决该问题最有效的工具，不少以此为基础的近似算法得以提出。Hein首先在\cite{hein1996complexity}中提出了一个近似比为3的近似算法，但却被Rodrigues在\cite{rodrigues2007maximum}中证明在某些情况下其近似比不可能小于4。同时，Rodrigues也提出了一些修正，宣称修正后的算法的近似比为3。然而，Bonet在\cite{bonet2006approximating}中给出的反例证明了\cite{hein1996complexity}和\cite{rodrigues2007maximum}中的算法近似比实际上均为5，并且可以在线性时间复杂度下实现。Bordewich在\cite{bordewich20083}中提出了一个正确的近似比为3的算法，然而是以时间复杂度增加到$O(n^5)$为代价\footnote{适当地改进数据结构可以将时间复杂度降低到$O(n^4)$}。在\cite{rodrigues2007maximum}中提出的第二个近似比为3的算法的时间复杂度为$O(n^2)$。最终，线性时间复杂度下近似比为3的算法由Whidden在\cite{whidden2009unifying}中提出。                                                                                                                                                                                                                                                             
 \subsection{参数算法}
 在生物进化过程中网状事件发生的次数远远小于物种的数量，因此固定参数算法往往是计算rSPR距离精确值的最好途径。将两棵进化树的rSPR距离作为参数$k$的参数算法便是一个很有前景的研究方法。以此为基础，Bordewich在\cite{bordewich20083}中提出了一个时间复杂度为$O(4^k \cdot k^5 + n^3)$参数算法。之后，Hallett，Allen，Bonet等人针对该问题的相关问题也有许多有意义的研究。\citeup{hallett2007faster}\citeup{allen2001subtree}\citeup{bonet2010complexity}Whidden在\cite{whidden2010fast}中提出的算法可以说是该问题在参数算法上的一个突破，该算法的时间复杂度为$O(2.42^kn)$，并且从实验结果可以看出其性能远优于先前的算法，有能力处理具有更多节点数更大rSPR距离的进化树对比问题。随后，Chen和Wang在\cite{chen2012faster}中对Whidden的算法中最差的情况进行了许多改进，最后获得了一个时间复杂度为$O(2.34^kn)$的参数算法，但其改进方法分类较多，比较复杂，因此算法实现难度很大。本文也是基于相同的思想，但使用相对更简单的方法得到了更好的改进效果。
 
 \subsection{启发式算法}
-许多关于SPR距离的启发式算法在近年也得以提出，并开发了相关的软件。其中，Hallett和Lagergen开发的程序LatTrans\citeup{hallett2001efficient}针对一些特殊的rSPR操作进行建模，只考虑进化树只可能在两种情况下相异，在这种特殊的条件下，它的时间复杂度可以减少到$O(2^kn^2)$。Macleod开发的HorizStory\citeup{macleod2005deduction}可以计算多叉树的SPR距离，但只考虑SPR操作对象是只有一个叶节点的子树。SPRdist\citeup{bonet2009efficiently}和TreeSAT\citeup{wu2009practical}是两个计算rSPR距离的软件，他们分别把计算MAF的问题转化为整数线性规划问题（integer linear programming, ILP）和可满足性问题（satisfiability problem, SAT），然后利用求解对应问题的有效手段来获得rSPR距离的解。但根据实验结果，它们的性能均不能与Whidden所提出的算法相比。
+许多关于SPR距离的启发式算法在近年也得以提出，并开发了相关的软件。其中，Hallett和Lagergen开发的程序LatTrans\citeup{hallett2001efficient}针对一些特殊的rSPR操作进行建模，只考虑进化树只可能在两种情况下相异，在这种特殊的条件下，它的时间复杂度可以减少到$O(2^kn^2)$。Macleod开发的HorizStory\citeup{macleod2005deduction}可以计算多叉树的SPR距离，但只考虑SPR操作对象是只有一个叶节点的子树。SPRdist\citeup{bonet2009efficiently}和TreeSAT\citeup{wu2009practical}是两个计算rSPR距离精确值的软件，他们分别把计算MAF的问题转化为整数线性规划问题（integer linear programming, ILP）和可满足性问题（satisfiability problem, SAT），然后利用求解对应问题的有效手段来获得rSPR距离的解。但根据实验结果，它们的性能均不能与Whidden所提出的算法相比。\citeup{whidden2010fast}
 
-\subsection{Whidden的参数算法概述}
+\subsection{Whidden的参数算法\citeup{whidden2010fast}概述}
+
+Whidden的算法所解决的正是本文在第\ref{problem}节中所提出的问题。设$MAF(T_1,F_2,k)$为针对此问题的判定函数，$T_1$代表第一棵进化树，$F_2$代表$T_2$删除某个边集后所得的森林，$k$是一个非负整数。若$F_2$能够在删除至多$k$条边后变成$T_1,T_2$的最大一致森林，则$MAF(T_1,F_2,k)$返回$true$，否则返回$false$。初始时，$F_2 = T_2$。求解rSPR距离，只需要从$0$开始枚举$k$的值，直到$MAF(T_1,T_2,k)$返回$true$。因为时间复杂度是关于$k$的指数，所以相对于计算$MAF(T_1,T_2,k)$，计算rSPR距离只会在时间复杂度的常数上有所增加。算法采用递归的思想，$MAF$函数的具体步骤如下：
+
+\begin{enumerate}
+	\item 如果$k<0$，返回$false$
+	\item \label{step2}如果在$T_1$中存在一对兄弟叶节点$a,b$，并且它们在$F_2$中的对应节点也是兄弟叶节点，那么就合并$a,b$，然后把它们的在$T_1,F_2$中的父节点作为对应的叶节点。重复此步骤，直至没有节点可以合并。
+	\item 如果在$F_2$中存在只有一个节点的子树$x$，则将$x$从$T_1,F_2$中移除。重复此步骤，直至没有节点可以移除。此时如果产生新的可以合并的兄弟叶节点，则转至\ref{step2}，否则继续。
+	\item 如果$F_2$为空，返回$true$
+	\item \label{step5}任意选择$T_1$中的一对兄弟叶节点$a,b$（注意到此时$a,b$在$F_2$中一定不是兄弟叶节点），分三种情况讨论（如图\ref{3cases}）：
+	\begin{enumerate}
+		\item \label{case1}若$a,b$在$F_2$中属于不同的连通分量。可以证明\citeup{whidden2013fixed}，$a$的父边$e_a$和$b$的父边$e_b$两条边中至少有一条需要删除。对于两种情况下修改后的$F_2' = F_2 - \{e_a\}$和$F_2' = F_2 - \{e_b\}$，分别调用两次$MAF(T_1,F_2',k-1)$。只要有任意一次结果为$true$，则返回$true$，否则返回$false$。
+		\item \label{case2}若$a,b$在$F_2$中连通，并且$a,b$之间有且只有一个悬挂节点$p$。可以证明\citeup{whidden2013fixed}，一定存在最优解$E \subset E_{T_2}$，使得$T_2 - E$是$T_1,T_2$的MAF，并且$e_p \in E$。因此，只需要直接修改$F_2$，得到$F_2' = F_2-\{e_p\}$。若$MAF(T_1,F_2',k-1)$结果为$true$，则返回$true$，否则返回$false$。
+		\item \label{case3}若$a,b$在$F_2$中连通，并且$a,b$之间有至少两个悬挂节点。设$a,b$之间所有悬挂节点的集合为$P=\{p_1,p_2,...,p_n\}$。可以证明\citeup{whidden2013fixed}，一定存在最优解$E \subset E_{T_2}$，使得$T_2 - E$是$T_1,T_2$的MAF，并且$e_a \in E$或者$e_b \in E$或者对于所有$1 \le i \le n$，有$e_{p_i} \in E$。因此，分别修改$F_2$得到$F_2' = F_2 - \{e_a\}$、$F_2' = F_2 - \{e_b\}$和$F_2' = F_2 - E_P$（$E_P$为P中所有节点对应的父边的集合），然后分别调用两次$MAF(T_1,F_2',k-1)$和一次$MAF(T_1,F_2',k-n)$。只要有任意一次结果为$true$，则返回$true$，否则返回$false$。
+	\end{enumerate}  
+\end{enumerate}
 
 
-
-
-
-
-
+\pic[htbp]{Whidden算法第\ref{step5}步的三种情况}{width=0.67\textwidth}{3cases}
 
 
 
