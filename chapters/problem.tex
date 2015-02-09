@@ -64,25 +64,19 @@ Bordewich和Semple\citeup{bordewich2005computational}已经指出两棵进化树
 \subsection{启发式算法}
 许多关于SPR距离的启发式算法在近年也得以提出，并开发了相关的软件。其中，Hallett和Lagergen开发的程序LatTrans\citeup{hallett2001efficient}针对一些特殊的rSPR操作进行建模，只考虑进化树只可能在两种情况下相异，在这种特殊的条件下，它的时间复杂度可以减少到$O(2^kn^2)$。Macleod开发的HorizStory\citeup{macleod2005deduction}可以计算多叉树的SPR距离，但只考虑SPR操作对象是只有一个叶节点的子树。SPRdist\citeup{bonet2009efficiently}和TreeSAT\citeup{wu2009practical}是两个计算rSPR距离精确值的软件，他们分别把计算MAF的问题转化为整数线性规划问题（integer linear programming, ILP）和可满足性问题（satisfiability problem, SAT），然后利用求解对应问题的有效手段来获得rSPR距离的解。但根据实验结果，它们的性能均不能与Whidden所提出的算法相比。\citeup{whidden2010fast}
 
-\subsection{Whidden的参数算法\citeup{whidden2010fast}概述}
-
-Whidden的算法所解决的正是本文在第\ref{problem}节中所提出的问题。设$MAF(T_1,F_2,k)$为针对此问题的判定函数，$T_1$代表第一棵进化树，$F_2$代表$T_2$删除某个边集后所得的森林，$k$是一个非负整数。若$F_2$能够在删除至多$k$条边后变成$T_1,T_2$的最大一致森林，则$MAF(T_1,F_2,k)$返回$true$，否则返回$false$。初始时，$F_2 = T_2$。求解rSPR距离，只需要从$0$开始枚举$k$的值，直到$MAF(T_1,T_2,k)$返回$true$。因为时间复杂度是关于$k$的指数，所以相对于计算$MAF(T_1,T_2,k)$，计算rSPR距离只会在时间复杂度的常数上有所增加。算法采用递归的思想，$MAF$函数的具体步骤如下：
-
-\begin{enumerate}
-	\item 如果$k<0$，返回$false$
-	\item \label{step2}如果在$T_1$中存在一对兄弟叶节点$a,b$，并且它们在$F_2$中的对应节点也是兄弟叶节点，那么就合并$a,b$，然后把它们的在$T_1,F_2$中的父节点作为对应的叶节点。重复此步骤，直至没有节点可以合并。
-	\item 如果在$F_2$中存在只有一个节点的子树$x$，则将$x$从$T_1,F_2$中移除。重复此步骤，直至没有节点可以移除。此时如果产生新的可以合并的兄弟叶节点，则转至\ref{step2}，否则继续。
-	\item 如果$F_2$为空，返回$true$
-	\item \label{step5}任意选择$T_1$中的一对兄弟叶节点$a,b$（注意到此时$a,b$在$F_2$中一定不是兄弟叶节点），分三种情况讨论（如图\ref{3cases}）：
-	\begin{enumerate}
-		\item \label{case1}若$a,b$在$F_2$中属于不同的连通分量。可以证明\citeup{whidden2013fixed}，$a$的父边$e_a$和$b$的父边$e_b$两条边中至少有一条需要删除。对于两种情况下修改后的$F_2' = F_2 - \{e_a\}$和$F_2' = F_2 - \{e_b\}$，分别调用两次$MAF(T_1,F_2',k-1)$。只要有任意一次结果为$true$，则返回$true$，否则返回$false$。
-		\item \label{case2}若$a,b$在$F_2$中连通，并且$a,b$之间有且只有一个悬挂节点$p$。可以证明\citeup{whidden2013fixed}，一定存在最优解$E \subset E_{T_2}$，使得$T_2 - E$是$T_1,T_2$的MAF，并且$e_p \in E$。因此，只需要直接修改$F_2$，得到$F_2' = F_2-\{e_p\}$。若$MAF(T_1,F_2',k-1)$结果为$true$，则返回$true$，否则返回$false$。
-		\item \label{case3}若$a,b$在$F_2$中连通，并且$a,b$之间有至少两个悬挂节点。设$a,b$之间所有悬挂节点的集合为$P=\{p_1,p_2,...,p_n\}$。可以证明\citeup{whidden2013fixed}，一定存在最优解$E \subset E_{T_2}$，使得$T_2 - E$是$T_1,T_2$的MAF，并且$e_a \in E$或者$e_b \in E$或者对于所有$1 \le i \le n$，有$e_{p_i} \in E$。因此，分别修改$F_2$得到$F_2' = F_2 - \{e_a\}$、$F_2' = F_2 - \{e_b\}$和$F_2' = F_2 - E_P$（$E_P$为P中所有节点对应的父边的集合），然后分别调用两次$MAF(T_1,F_2',k-1)$和一次$MAF(T_1,F_2',k-n)$。只要有任意一次结果为$true$，则返回$true$，否则返回$false$。
-	\end{enumerate}  
-\end{enumerate}
 
 
-\pic[htbp]{Whidden算法第\ref{step5}步的三种情况}{width=0.67\textwidth}{3cases}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
