@@ -58,7 +58,7 @@ Bordewich和Semple\citeup{bordewich2005computational}已经指出两棵进化树
 
 \subsection{近似算法}
 自从Jotun Hein等人在\cite{hein1996complexity}中引入MAF的概念以来，MAF已经成为解决该问题最有效的工具，不少以此为基础的近似算法得以提出。Hein首先在\cite{hein1996complexity}中提出了一个近似比为3的近似算法，但却被Rodrigues在\cite{rodrigues2007maximum}中证明在某些情况下其近似比不可能小于4。同时，Rodrigues也提出了一些修正，宣称修正后的算法的近似比为3。然而，Bonet在\cite{bonet2006approximating}中给出的反例证明了\cite{hein1996complexity}和\cite{rodrigues2007maximum}中的算法近似比实际上均为5，并且可以在线性时间复杂度下实现。Bordewich在\cite{bordewich20083}中提出了一个正确的近似比为3的算法，然而是以时间复杂度增加到$O(n^5)$为代价\footnote{适当地改进数据结构可以将时间复杂度降低到$O(n^4)$}。在\cite{rodrigues2007maximum}中提出的第二个近似比为3的算法的时间复杂度为$O(n^2)$。最终，线性时间复杂度下近似比为3的算法由Whidden在\cite{whidden2009unifying}中提出。                                                                                                                                                                                                                                                             
-\subsection{参数算法}
+\subsection{固定参数算法}
 在生物进化过程中网状事件发生的次数远远小于物种的数量，因此固定参数算法往往是计算rSPR距离精确值的最好途径。将两棵进化树的rSPR距离作为参数$k$的参数算法便是一个很有前景的研究方法。以此为基础，Bordewich在\cite{bordewich20083}中提出了一个时间复杂度为$O(4^k \cdot k^5 + n^3)$参数算法。之后，Hallett，Allen，Bonet等人针对该问题的相关问题也有许多有意义的研究。\citeup{hallett2007faster}\citeup{allen2001subtree}\citeup{bonet2010complexity}Whidden在\cite{whidden2010fast}中提出的算法可以说是该问题在参数算法上的一个突破，该算法的时间复杂度为$O(2.42^kn)$，并且从实验结果可以看出其性能远优于先前的算法，有能力处理具有更多节点数更大rSPR距离的进化树对比问题。随后，Chen和Wang在\cite{chen2012faster}中对Whidden的算法中最差的情况进行了许多改进，最后获得了一个时间复杂度为$O(2.34^kn)$的参数算法，但其改进方法分类较多，比较复杂，因此算法实现难度很大。本文也是基于相同的思想，但使用相对更简单的方法得到了更好的改进效果。
 
 \subsection{启发式算法}
