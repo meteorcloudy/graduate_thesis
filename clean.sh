@@ -20,4 +20,4 @@ find . -name "*.lof"  | xargs rm -f
 find . -name "*.lot"  | xargs rm -f
 find . -name "*.alg"  | xargs rm -f
 find . -name "*.log"  | xargs rm -f
-find . -name "*.dvi"  | xargs rm -f
+find . -name "*.fdb_latexmk"  | xargs rm -f
