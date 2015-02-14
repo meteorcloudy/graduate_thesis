@@ -35,7 +35,7 @@ Whidden的算法所解决的正是本文在第\ref{problem}节中所提出的问
 	\begin{equation*}
 		C(k) \le C(k-1)
 	\end{equation*}
-	\item \label{case3_an}若$a,b$在$F_2$中连通，并且$a,b$之间有至少两个悬挂节点。
+	\item 若$a,b$在$F_2$中连通，并且$a,b$之间有至少两个悬挂节点。
 	\begin{equation*}
 		C(k) \le 2C(k-1) + C(k-m),~m \ge 2
 	\end{equation*}
@@ -79,13 +79,33 @@ C(k) \le 2C(k-1) + C(k-2)
 \section{改进算法}
 本文改进算法的前四步与第\ref{whidden_algo}节中叙述的完全一致，主要针对第\ref{step5}步进行优化。为了方便叙述，我们定义\textbf{$\rho(a,b)$等于从节点$a$到节点$b$的路径上的边数减$2$，即节点$a,b$之间悬挂节点的个数。}
 
-另外，在详细叙述本文的改进方法之前，我们再明确一下当$T_1,F_2$经过前四步的处理后所具有的两点性质：
-\begin{itemize}
+在详细叙述本文的改进方法之前，我们再明确一下当$T_1,F_2$经过前四步的处理后所具有的两点性质：\label{2point}
+
+\begin{enumerate}
 	\item $T_1$中的任意一对兄弟叶节点$a,b$在$F_2$中一定不是兄弟节点。换句话说，$a,b$在$F_2$中要么不连通，要么连通但$\rho(a,b) \ge 1$。
 	\item $T_1,F_2$中的任意一个叶节点$x$都不可能是某棵树的根节点。这意味着任意叶节点$x$的父边$e_x$一定存在。
-\end{itemize}
+\end{enumerate}
+
+改进算法的第五步首先是在$T_1$中寻找图\ref{3and4_pro}~(a)所表示的结构，这可以通过遍历$T_1$在最多$O(n)$的时间内完成。接下来，我们根据子树$T_p$的两种情况分类讨论。
 
 \subsection{当$p$为叶节点}
+\textit{Case 1: }当$p$为叶节点时，我们得到$T_1$中的$3$个叶节点$a,b,c$，使其结构如图\ref{3node}。此时，根据$a,b,c$在$F_2$中的不同形态，我们采取不同的策略。
+\pic[htbp]{$T_1$中的$a,b,c$}{width=0.25\textwidth}{3node}
+
+\textit{Case 1.1: }若$a,b$在$F_2$中属于不同的连通分量，此时出现Whidden算法第\ref{step5}步中的情况\ref{case1}，用相同方法处理。\\
+
+\textit{Case 1.2: }若$a,b$在$F_2$中属于相同的连通分量，但$\rho(a,b)=1$时，此时出现Whidden算法第\ref{step5}步中的情况\ref{case2}，也用相同方法处理。
+\clearpage
+
+\textit{Case 1.3: }若$a,b$在$F_2$中属于相同的连通分量，且满足$\rho(a,b) \ge 2$，但$a,b$与$c$不属于同一连通分量（如图\ref{case_1_3}）。
+\pic[htbp]{\textit{Case 1.3}中的$a,b,c$}{width=0.45\textwidth}{case_1_3}
+
+设$x$为节点$a$在最终的MAF中的兄弟节点，我们进行如下分类讨论：
+
+\begin{enumerate}
+	\item 如果$x = \empty$，
+\end{enumerate}
+
 \subsection{当$p$不为叶节点}
 
 
