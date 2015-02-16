@@ -77,36 +77,300 @@ C(k) \le 2C(k-1) + C(k-2)
 于是，基于引理\ref{yinli1}我们可以改进Whidden算法的第\ref{step5}步。
 
 \section{改进算法}
-本文改进算法的前四步与第\ref{whidden_algo}节中叙述的完全一致，主要针对第\ref{step5}步进行优化。为了方便叙述，我们定义\textbf{$\rho(a,b)$等于从节点$a$到节点$b$的路径上的边数减$2$，即节点$a,b$之间悬挂节点的个数。}
+本文改进算法的前四步与第\ref{whidden_algo}节中叙述的完全一致，主要针对第\ref{step5}步进行优化。为了方便叙述，我们作如下两个定义：
 
-在详细叙述本文的改进方法之前，我们再明确一下当$T_1,F_2$经过前四步的处理后所具有的两点性质：\label{2point}
+\begin{dingyi}
+\textbf{设$Q$为节点$a$到节点$b$的路径上所有节点的集合，但不包括$a,b$。有节点$x$，记其父节点为$f_x$，若满足$x \notin Q$且$x \notin \{a,b\}$且$f_x \in Q$，则称$x$为$a,b$之间的悬挂节点。}
+\end{dingyi}
+
+\begin{dingyi}
+\textbf{记$P(a,b)$为节点$a$到节点$b$的路径上所有悬挂节点的集合，$E_P$表示集合$P$中所有节点父边的集合。}
+\end{dingyi}
+
+
+在详细叙述本文的改进方法之前，我们再明确一下当$T_1,F_2$经过前四步的处理后所具有的两点性质：
 
 \begin{enumerate}
-	\item $T_1$中的任意一对兄弟叶节点$a,b$在$F_2$中一定不是兄弟节点。换句话说，$a,b$在$F_2$中要么不连通，要么连通但$\rho(a,b) \ge 1$。
-	\item $T_1,F_2$中的任意一个叶节点$x$都不可能是某棵树的根节点。这意味着任意叶节点$x$的父边$e_x$一定存在。
+	\item $T_1$中的任意一对兄弟叶节点$a,b$在$F_2$中一定不是兄弟节点。换句话说，$a,b$在$F_2$中要么不连通，要么连通但$|P(a,b)| \ge 1$。
+	\item \label{2point} $T_1,F_2$中的任意一个叶节点$x$都不可能是某棵树的根节点。这意味着任意叶节点$x$的父边$e_x$一定存在。
 \end{enumerate}
 
 改进算法的第五步首先是在$T_1$中寻找图\ref{3and4_pro}~(a)所表示的结构，这可以通过遍历$T_1$在最多$O(n)$的时间内完成。接下来，我们根据子树$T_p$的两种情况分类讨论。
 
 \subsection{当$p$为叶节点}
 \textit{Case 1: }当$p$为叶节点时，我们得到$T_1$中的$3$个叶节点$a,b,c$，使其结构如图\ref{3node}。此时，根据$a,b,c$在$F_2$中的不同形态，我们采取不同的策略。
-\pic[htbp]{$T_1$中的$a,b,c$}{width=0.25\textwidth}{3node}
+\pic[htbp]{\textit{Case 1 }$T_1$中的$a,b,c$}{width=0.25\textwidth}{3node}
 
-\textit{Case 1.1: }若$a,b$在$F_2$中属于不同的连通分量，此时出现Whidden算法第\ref{step5}步中的情况\ref{case1}，用相同方法处理。\\
+\textit{Case 1.1: }若$a,b$在$F_2$中属于不同的连通分量，此时出现Whidden算法第\ref{step5}步中的情况\ref{case1}（简称\textbf{情况\ref{case1}}），用相同方法处理。
 
-\textit{Case 1.2: }若$a,b$在$F_2$中属于相同的连通分量，但$\rho(a,b)=1$时，此时出现Whidden算法第\ref{step5}步中的情况\ref{case2}，也用相同方法处理。
-\clearpage
+\textit{Case 1.2: }若$a,b$在$F_2$中属于相同的连通分量，但$|P(a,b)|=1$时，此时出现Whidden算法第\ref{step5}步中的情况\ref{case2}（简称\textbf{情况\ref{case2}}），也用相同方法处理。
 
-\textit{Case 1.3: }若$a,b$在$F_2$中属于相同的连通分量，且满足$\rho(a,b) \ge 2$，但$a,b$与$c$不属于同一连通分量（如图\ref{case_1_3}）。
-\pic[htbp]{\textit{Case 1.3}中的$a,b,c$}{width=0.45\textwidth}{case_1_3}
+\textit{Case 1.3: }若$a,b$在$F_2$中属于相同的连通分量，且满足$|P(a,b)| \ge 2$，但$a,b$与$c$不属于同一连通分量（如图\ref{case_1_3}）。
+\pic[htbp]{\textit{Case 1.3 }$F_2$中的$a,b,c$}{width=0.45\textwidth}{case_1_3}
 
-设$x$为节点$a$在最终的MAF中的兄弟节点，我们进行如下分类讨论：
+设$x$为节点$a$在最终的MAF中的兄弟节点，根据节点$x$可能的情况，我们进行如下分类讨论：
 
 \begin{enumerate}
-	\item 如果$x = \empty$，
+	\item 如果$x \in \emptyset$，即$a$最终为孤立节点，那么必须删除$e_a$。删除后在$T_1$中$b,c$为兄弟，而在$F_2$中$b,c$不连通，此时出现\textbf{情况\ref{case1}}，可以有两种选择，删除$e_b$或者$e_c$。因此分别调用两次递归函数，$MAF(T_1,F_2-\{e_a,e_b\},k-2)$和$MAF(T_1,F_2-\{e_a,e_c\},k-2)$。
+	\item 如果$x = b$，则需删除$F_2$中$a$到$b$之间所有的悬挂节点的父边$E_{P(a,b)}$。因此只需调用一次递归函数，$MAF(T_1,F_2-E_{P(a,b)},k-|P(a,b)|)$。
+	\item 如果$x \notin \emptyset$且$x \neq b$，由$F_2$的结构可知必须删除$b$的父边$e_b$。删除后在$T_1$中$a,c$为兄弟，而在$F_2$中$a,c$不连通，此时出现\textbf{情况\ref{case1}}，可以有两种选择，删除$e_a$或者$e_c$。因此分别调用两次递归函数，$MAF(T_1,F_2-\{e_a,e_b\},k-2)$和$MAF(T_1,F_2-\{e_b,e_c\},k-2)$。$MAF(T_1,F_2-\{e_a,e_b\},k-2)$与1中重复，可省略。\\
+\end{enumerate}
+综上，对于\textit{Case 1.3}，我们需要调用四次递归函数：
+\begin{center}
+$MAF(T_1,F_2,k) = \left\{
+\begin{array}{lr}
+         MAF(T_1,F_2-\{e_a,e_b\},k-2) & \mbox{or}\\ 
+         MAF(T_1,F_2-\{e_a,e_c\},k-2) & \mbox{or}\\
+         MAF(T_1,F_2-\{e_b,e_c\},k-2) & \mbox{or}\\
+         MAF(T_1,F_2-E_{P(a,b)},k-|P(a,b)|) & 
+\end{array}
+\right.$
+\end{center}
+
+\textit{Case 1.4: }若$a,b$在$F_2$中属于相同的连通分量，满足$|P(a,b)| \ge 2$，且$a,b$与$c$属于同一连通分量。则需要进行更细节的讨论。
+% \clearpage
+$ $\\
+
+\textit{Case 1.4.1: }在\textit{Case 1.4}的前提下，若在$F_2$中存在$|P(a,c)|=0$或者$|P(b,c)|=0$，即$a,c$或者$b,c$是兄弟节点。（如图\ref{case_1_4_1}）
+\pic[htbp]{\textit{Case 1.4.1 }$F_2$中的$a,b,c$}{width=0.5\textwidth}{case_1_4_1}
+
+因为在$T_1$中有$P(a,c)=\{b\},P(b,c)=\{a\}$，此时出现\textbf{情况\ref{case2}}。对应的，应该删除$e_b$或者$e_a$。
+因此，对于\textit{Case 1.4.1}有：
+\begin{center}
+$MAF(T_1,F_2,k) = \left\{
+\begin{array}{lcl}
+         MAF(T_1,F_2-\{e_b\},k-2) & \mbox{for} & |P(a,c)|=0\\ 
+         MAF(T_1,F_2-\{e_a\},k-2) & \mbox{for} & |P(b,c)|=0\\
+\end{array}
+\right.$
+\end{center}
+$  $\\
+
+\textit{Case 1.4.2: }在\textit{Case 1.4}的前提下，若$F_2$中满足$|P(a,c)|=1$且$|P(b,c)|=1$，此时$F_2$中的$a,b,c$只可能是图\ref{case_1_4_2}中的两种情况。
+\pic[htbp]{\textit{Case 1.4.2 }$F_2$中的$a,b,c$}{width=0.7\textwidth}{case_1_4_2}
+
+同样，设$x$为节点$a$在最终的MAF中的兄弟节点，根据节点$x$可能的情况，我们首先针对图\ref{case_1_4_2}~(a)的情形进行如下分类讨论：
+\begin{enumerate}
+	\item 如果$x \in \emptyset$，即$a$最终为孤立节点，那么必须删除$e_a$。删除后在$T_1$中$b,c$为兄弟，而在$F_2$中$P(b,c)=\{p\}$，此时出现\textbf{情况\ref{case2}}，因此可以直接删除$b,c$之间的悬挂节点$p$的父边。需调用一次递归函数，$MAF(T_1,F_2-\{e_a,e_p\},k-2)$。
+	\item 如果$x = b$，则需删除$F_2$中$a$到$b$之间所有的悬挂节点的父边$E_{P(a,b)}$。注意到此时$P(a,b)=\{c,p\}$，需调用一次递归函数，$MAF(T_1,F_2-\{e_c,e_p\},k-2)$。
+	\item 如果$x = c$，则需删除$e_b$和$F_2$中$a$到$c$之间所有的悬挂节点的父边$E_{P(a,c)}$。注意到此时$P(a,c)=\{p\}$，需调用一次递归函数，$MAF(T_1,F_2-\{e_b,e_p\},k-2)$。
+	\item 如果$x \notin \emptyset$且$x \notin \{b,c\}$，则需要删除$e_b,e_c$。调用一次递归函数，$MAF(T_1,F_2-\{e_b,e_c\},k-2)$。
 \end{enumerate}
 
+然而，通过观察，实际上我们可以发现$x=b$和$x=c$两种情况处理后的$T_1,F_2$实际上是等价的。）对于如图\ref{case_1_4_2_eq}的两片森林，只需要简单地交换节点$b,c$的标识即可让它们等价，而这并不会影响最终MAF的大小。
+\pic[htbp]{$x=b$和$x=c$两种情况处理后的$F_2$}{width=0.4\textwidth}{case_1_4_2_eq}
+
+因此，我们可以在$x=b$和$x=c$两种选择中省略一种，不妨省略$x=c$。而对于图\ref{case_1_4_2}~(b)的情况，我们交换$a,b$所代表的节点后可以用完全相同的方法处理。
+
+综上，对于\textit{Case 1.4.2}，我们需要调用三次递归函数：
+\begin{center}
+$MAF(T_1,F_2,k) = \left\{
+\begin{array}{lr}
+         MAF(T_1,F_2-\{e_a,e_p\},k-2) & \mbox{or}\\ 
+         MAF(T_1,F_2-\{e_c,e_p\},k-2) & \mbox{or}\\
+         MAF(T_1,F_2-\{e_b,e_c\},k-2) & 
+\end{array}
+\right.$
+\end{center}
+$ $\\
+
+\textit{Case 1.4.3: }在\textit{Case 1.4}的前提下，排除\textit{Case 1.4.1}和\textit{Case 1.4.2}，$F_2$中一定有$|P(a,c)| \ge 1$且$|P(b,c)| \ge 1$且存在$x \in \{a,b\}$使$|P(x,c)| \ge 2$。不妨设$x=a$，综合之前的条件，有
+\begin{center}
+$\left\{
+\begin{array}{l}
+	|P(a,b)| \ge 2\\
+	|P(a,c)| \ge 2\\
+	|P(b,c)| \ge 1
+\end{array}
+\right.$
+\end{center}
+
+在满足上述条件的情况下，$F_2$中$a,b,c$有可能为如图\ref{case_1_4_3}三种形态：
+\pic[htbp]{\textit{Case 1.4.3 }$F_2$中的$a,b,c$}{width=0.7\textwidth}{case_1_4_3}
+
+虽然是三种不同形态，实际上我们都可以采取类似\textit{Case 1.4.2}的策略来处理。跟之前一样，设$x$为节点$a$在最终的MAF中的兄弟节点，根据节点$x$可能的情况，进行如下分类：
+\begin{enumerate}
+	\item 如果$x \in \emptyset$，即$a$最终为孤立节点，那么必须删除$e_a$。需调用一次递归函数，$MAF(T_1,F_2-\{e_a\},k-1)$。
+	\item 如果$x = b$，则需删除$F_2$中$a$到$b$之间所有的悬挂节点的父边$E_{P(a,b)}$。需调用一次递归函数，$MAF(T_1,F_2-E_{P(a,b)},k-|P(a,b)|)$。
+	\item 如果$x = c$，则需删除$e_b$和$F_2$中$a$到$c$之间所有的悬挂节点的父边$E_{P(a,c)}$，即$E_{P(a,c) \cup \{b\}}$。需调用一次递归函数，$MAF(T_1,F_2-E_{P(a,c) \cup \{b\}},k-|P(a,c) \cup \{b\}|)$。
+	\item 如果$x \notin \emptyset$且$x \notin \{b,c\}$，则需要删除$e_b,e_c$。调用一次递归函数，$MAF(T_1,F_2-\{e_b,e_c\},k-2)$。
+\end{enumerate}
+\clearpage
+综上，对于\textit{Case 1.4.3}，我们需要调用四次递归函数：
+\begin{center}
+$MAF(T_1,F_2,k) = \left\{
+\begin{array}{lr}
+         MAF(T_1,F_2-\{e_a\},k-2) & \mbox{or}\\ 
+         MAF(T_1,F_2-E_{P(a,b)},k-|P(a,b)|) & \mbox{or}\\
+         MAF(T_1,F_2-E_{P(a,c) \cup \{b\}},k-|P(a,c) \cup \{b\}|) & \mbox{or}\\
+         MAF(T_1,F_2-\{e_b,e_c\},k-2) & 
+\end{array}
+\right.$
+\end{center}
+
+为了后文时间复杂度的分析，我们在此先分析一下$|P(a,c) \cup \{b\}|$的大小。
+
+\begin{yinli}\label{yinli2}
+\textbf{	
+设$a,b,c$为同一进化树上的三个节点，且满足$b \in P(a,c)$。则存在如下关系}
+\end{yinli}
+\begin{equation*}
+\textbf{$|P(a,c)| = |P(a,b)|+|P(b,c)|$}
+\end{equation*}
+
+\textbf{证明：}记$R_{xy}$为节点$x,y$的最近公共祖先。如果节点$y$是$x$的祖先，则记为$x \prec y$。根据$R_{ab},R_{ac},R_{bc}$的不同情况可能出现如图\ref{yinli_3_3_1_pro}的两种形态。
+
+首先我们针对$R_{ab} \prec R_{ac}$的情况进行分析。根据该情况下进化树的结构和悬挂节点的定义可得到如下几个等式：
+
+\begin{center}
+$\left\{
+\begin{array}{lr}
+	|P(a,b)| = |P(a,R_{ab})| + |P(R_{ab},b)|\\
+	|P(a,c)| = |P(a,R_{ab})| + |P(R_{ab},c)| + 1\\
+	|P(b,c)| = |P(b,R_{ab})| + |P(R_{ab},c)| + 1\\
+\end{array}
+\right.$
+\end{center}
+又因为节点$b$与$R_{ab}$直接相连，可知$P(b,R_{ab}) =P(R_{ab},b) = 0$。带入之前的三个等式即可得到：
+\begin{equation*}
+|P(a,c)| = |P(a,b)|+|P(b,c)|
+\end{equation*}
+
+同理，对于$R_{bc} \prec R_{ac}$的情况，可以用完全相同的方法证明。
+\pic[htbp]{当$b \in P(a,c)$时$a,b,c$的可能形态}{width=0.55\textwidth}{yinli_3_3_1_pro}
+
+\clearpage
+
+对于$|P(a,c) \cup \{b\}|$的大小，我们考虑$b$是否属于$P(a,c)$
+\begin{itemize}
+	\item 当$b \notin P(a,c)$，则有$|P(a,c) \cup \{b\}| = |P(a,c)|+1$。\\
+		而根据\textit{Case 1.4.3}的条件$|P(a,c)| \ge 2$，因此$|P(a,c) \cup \{b\}| \ge 3$。
+	\item 当$b \in P(a,c)$，则有$|P(a,c) \cup \{b\}| = |P(a,c)|$。\\
+		但由引理\ref{yinli2}，可得$|P(a,c)| = |P(a,b)| + |P(b,c)|$。\\
+		而根据\textit{Case 1.4.3}的条件$|P(a,b)| \ge 2$且$P(b,c) \ge 1$，因此$|P(a,c) \cup \{b\}| \ge 3$。\\
+\end{itemize}
+ 
+综上，在\textit{Case 1.4.3}中，$|P(a,c) \cup \{b\}| \ge 3$。\\
+
+
 \subsection{当$p$不为叶节点}
+
+\textit{Case 2: }当$p$不为叶节点时，我们得到$T_1$中4个叶节点$a,b,c,d$，使其结构如图\ref{4node}。此时，如果继续完整地讨论$a,b,c,d$在$F_2$中的不同形态将会十分复杂，而本文通过将4点情况转化为3点情况巧妙地避免了很多复杂的讨论。首先我们根据$a,b,c,d$在$F_2$中的连通性进行分类讨论。\\
+
+\pic[htbp]{\textit{Case 2 }$T_1$中的$a,b,c,d$}{width=0.32\textwidth}{4node}
+
+\textit{Case 2.1: }若$a,b$（或$c,d$）在$F_2$中属于不同的连通分量，此时出现Whidden算法第\ref{step5}步中的情况\ref{case1}，用相同方法处理。\\
+
+\textit{Case 2.2: }若$a,b$（或$c,d$）在$F_2$中属于相同的连通分量，但$|P(a,b)|=1$（或$|P(c,d)|=1$）时，此时出现Whidden算法第\ref{step5}步中的情况\ref{case2}，也用相同方法处理。\\
+
+\textit{Case 2.3: }若$a,b$在$F_2$中连通，$c,d$也在$F_2$中连通，且满足$|P(a,b)| \ge 2,|P(c,d)| \ge 2$，但$a,b$与$c,d$不属于同一连通分量（如图\ref{case_2_3}）。
+\pic[htbp]{\textit{Case 2.3 }$F_2$中的$a,b,c,d$}{width=0.4\textwidth}{case_2_3}
+
+类似\textit{Case 1}中的分析，设$x$为节点$c$在最终的MAF中的兄弟节点，根据节点$x$可能的情况，进行如下分类讨论：
+\begin{enumerate}
+	\item 如果$x \neq d$，根据$T_1$中的形态可知$e_c,e_d$必然有至少一个会被删除。若删除$e_d$，那么此时$a,b,c$满足\textit{Case 1.3}的条件。同理，若删除$e_c$，则$a,b,d$也会满足\textit{Case 1.3}的条件。因此，我们只需要调用两次处理\textit{Case 1.3}的函数，$CASE\_1\_3(T_1,F_2-\{e_d\},k-1,a,b,c)$和$CASE\_1\_3(T_1,F_2-\{e_c\},k-1,a,b,d)$。
+	\item 如果$x = d$，则需删除$F_2$中$c$到$d$之间所有的悬挂节点的父边$E_{P(c,d)}$。然后只需调用一次递归函数，$MAF(T_1,F_2-E_{P(c,d)},k-2)$。
+\end{enumerate}
+
+综上，对于\textit{Case 2.3}，我们需要调用3次递归函数：
+\begin{center}
+$MAF(T_1,F_2,k) = \left\{
+\begin{array}{lr}
+         CASE\_1\_3(T_1,F_2-\{e_d\},k-1,a,b,c) & \mbox{or}\\ 
+         CASE\_1\_3(T_1,F_2-\{e_c\},k-1,a,b,d) & \mbox{or}\\
+         MAF(T_1,F_2-E_{P(a,b)},k-2) & \mbox{or}
+\end{array}
+\right.$
+\end{center}
+$ $\\
+
+\textit{Case 2.4: }若$a,b,c,d$在$F_2$中都属于同一连通分量，且满足$|P(a,b)| \ge 2,|P(c,d)| \ge 2$。此时，$a,b,c,d$在$F_2$中会有很多种不同形态，但我们可以通过讨论$c,d$在最终MAF的情况，将问题转化为\textit{Case 1.4.3}的情况。
+
+类似\textit{Case 1}中的分析，设$x$为节点$c$在最终的MAF中的兄弟节点，根据节点$x$可能的情况，进行如下分类讨论：
+\begin{enumerate}
+	\item 如果$x \neq d$，根据$T_1$中的形态可知$e_c,e_d$必然有至少一个会被删除。若删除$e_d$，那么此时$a,b,c$满足\textit{Case 1.4.3}的条件。同理，若删除$e_c$，则$a,b,d$也会满足\textit{Case 1.4.3}的条件。因此，我们只需要调用两次处理\textit{Case 1.4.3}的函数，$CASE\_1\_4\_3(T_1,F_2-\{e_d\},k-1,a,b,c)$和$CASE\_1\_4\_3(T_1,F_2-\{e_c\},k-1,a,b,d)$。
+	\item 如果$x = d$，则需删除$F_2$中$a$到$b$之间所有的悬挂节点的父边$E_{P(c,d)}$。然后只需调用一次递归函数，$MAF(T_1,F_2-E_{P(c,d)},k-2)$。
+\end{enumerate}
+
+综上，对于\textit{Case 2.4}，我们需要调用3次递归函数：
+\begin{center}
+$MAF(T_1,F_2,k) = \left\{
+\begin{array}{lr}
+         CASE\_1\_4\_3(T_1,F_2-\{e_d\},k-1,a,b,c) & \mbox{or}\\ 
+         CASE\_1\_4\_3(T_1,F_2-\{e_c\},k-1,a,b,d) & \mbox{or}\\
+         MAF(T_1,F_2-E_{P(c,d)},k-2) & \mbox{or}
+\end{array}
+\right.$
+\end{center}
+
+
+\section{改进算法的时间复杂度}
+
+类似Whidden的算法，我们每次递归的函数也可以在$O(n)$的时间内完成。设$C(k)$为参数为k时最坏情况下搜索数的大小。对于\textit{Case 1}中的所有情况以及\textit{Case 2.1, Case 2.2}可以直接列出以下不等式：
+\begin{center}
+$\left\{
+\begin{array}{lr}
+	C(k) \le 2C(k-1) & Cases~1.1,~2.1\\
+	C(k) \le C(k-1) &  Cases~1.2,~1.4.1,~2.2\\
+	C(k) \le 3C(k-2) + C(k-m),~m \ge 2 & Case~1.3 \\
+	C(k) \le 3C(k-2) & Case~1.4.2 \\
+	C(k) \le C(k-1)+C(k-2) + C(k-m_1) + C(k-m_2),~m_1 \ge 2, m_2 \ge 3 & Case~1.4.3
+\end{array}
+\right.$
+\end{center}
+
+对于$Case 2.3$和$Case 2.4$，由于需要转移到$Case 1.3$和$Case 1.4.3$，我们设$Q_1$为$Case 1.3$所限制的搜索树大小，$Q_2$为$Case 1.4.3$所限制的搜索树大小。根据之前的分析，可以得到不等式：
+
+\begin{center}
+$\left\{
+\begin{array}{lr}
+	C(k) \le 2Q_1(k-1) + C(k-2) & Case~2.3 \\
+	C(k) \le 2Q_2(k-1) + C(k-2) & Case~2.4 \\
+	Q_1(k) \le 3C(k-2) + C(k-m),~m \ge 2 & Case~1.3 \\
+	Q_2(k) \le C(k-1)+C(k-2) + C(k-m_1) + C(k-m_2),~m_1 \ge 2, m_2 \ge 3 & Case~1.4.3
+\end{array}
+\right.$
+\end{center}
+
+我们取\textit{Case 1.3}和\textit{Case 1.4.3}的最坏情况带入，即$m = 2, m_1 = 2, m_2 = 3$时，可以得到
+\begin{center}
+$\left\{
+\begin{array}{lr}
+	C(k) \le C(k-2) + 8C(k-3) & Case~2.3 \\
+	C(k) \le 3C(k-2) + 4C(k-3) + 2C(k-4)& Case~2.4
+\end{array}
+\right.$
+\end{center}
+
+综合\textit{Case 1}和\textit{Case 2}，最差的情况为\textit{Case 2.4}。设$C(k) = \alpha ^ k$，带入可得
+\begin{equation*}
+ 1 = 3\alpha ^ {-2} + 4\alpha ^ {-3} + 2\alpha ^{-4}
+\end{equation*}
+解得$\alpha \approx 2.27$，因此改进算法的复杂度为$O(2.27^kn)$。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
