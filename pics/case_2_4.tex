@@ -24,13 +24,13 @@ transform shape]
             child{
                 node [main node] (2) {$a$}
             }
-            child{
+            child[edge from parent path = {(\tikzparentnode) -- (\tikzchildnode.north)[dash pattern=on 2pt off 1.3pt]}]{
                 node [main node] (3) {$b$}
             }
     }
     child{
         [sibling distance = 10mm] node (6) {}
-            child{
+            child[edge from parent path = {(\tikzparentnode) -- (\tikzchildnode.north)[dash pattern=on 2pt off 1.3pt]}]{
                 node [main node] (4) {$c$}
             }
             child{
@@ -40,14 +40,6 @@ transform shape]
 ;
 \draw[dashed] (0,0) -- (0.5,0.35);
 
-\draw[gray] (0.25-1,-0.5-1) -- (0.09-1,-0.82-1);
-\draw[gray] (-0.25-1,-0.5-1) -- (-0.09-1,-0.82-1);
-
-\draw[gray] (0.25+1,-0.5-1) -- (0.09+1,-0.82-1);
-\draw[gray] (-0.25+1,-0.5-1) -- (-0.09+1,-0.82-1);
-
-\draw[gray] (6-6.5,-7.5+7) -- (6.3-6.5,-7.8+7);
-\draw[gray] (0.5,-0.5) -- (6.7-6.5,-7.8+7);
 
 \end{tikzpicture}
 

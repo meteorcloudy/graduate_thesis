@@ -1,0 +1,70 @@
+\documentclass[border=6.5mm]{standalone}
+\usepackage[utf8]{inputenc}                   % 替换你正在使用的编码
+\usepackage{CJKutf8}
+
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{xcolor}
+\definecolor{bluekeywords}{RGB}{181,19,154}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+
+\usepackage{listings}
+\lstset{language=C++,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  escapeinside={(*@}{@*)},
+  commentstyle=\color{greencomments},
+  keywordstyle=\color{bluekeywords},
+  stringstyle=\color{redstrings},
+  basicstyle=\linespread{1} \ttfamily,
+  escapechar=`,
+  extendedchars=false,
+  breaklines=false,
+  % frame = trbl,
+  numbers=left, 
+  % numbersep=2pt,
+  numberstyle=\small \color{gray},
+  columns=fullflexible
+}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+\begin{lstlisting}
+TreeNode * PhylogenyTree :: SubTreeContract(TreeNode *p) {
+    
+    do {
+        
+        while (p->GetChildrenSize()==1) {
+            TreeNode * tmp = p->children[0];
+            p->children.clear();
+            tmp->parent = p->parent;
+            idMap.erase(p->id);
+            delete p;
+            p = tmp;
+        }
+        
+        if (p->GetChildrenSize()==2) {
+            TreeNode * child1 = SubTreeContract(p->children[0]);
+            TreeNode * child2 = SubTreeContract(p->children[1]);
+            p->children.clear();
+            if (child1 != NULL) p->children.push_back(child1);
+            if (child2 != NULL) p->children.push_back(child2);
+        }
+        
+    } while (p->GetChildrenSize()!=0&&p->GetChildrenSize()!=2);
+    
+    if (p->IsLeaf() && p->GetLablel() == -1) {
+        delete p;
+        idMap.erase(p->id);
+        p = NULL;
+    }
+    // `\color{greencomments}中文`
+    return p;
+}
+\end{lstlisting}
+\end{CJK}
+\end{document}

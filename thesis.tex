@@ -1,6 +1,6 @@
 % !Mode:: "TeX:UTF-8"
 
-\documentclass[bachelor]{uestcthesis}
+\documentclass[bachelor,onlychapters]{uestcthesis}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{graphicx}
@@ -9,14 +9,26 @@
 \usepackage{algpseudocode}
 \usepackage{amssymb}
 
+
+\usepackage[utf8]{inputenc}                   % 替换你正在使用的编码
+\usepackage{CJKutf8}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{xcolor}
+
+\definecolor{bluekeywords}{RGB}{181,19,154}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+\usepackage{listings}
+
 \let\oldemptyset\emptyset
 \let\emptyset\varnothing
 
 \begin{document}
 \include{chapters/introduction}
-\include{chapters/problem}
-\include{chapters/design}
-% \include{chapters/implement}
+% \include{chapters/problem}
+% \include{chapters/design}
+\include{chapters/implement}
 % \include{chapters/experiment}
 % \include{chapters/end}
 \end{document}
