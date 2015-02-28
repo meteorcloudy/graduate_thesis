@@ -1,79 +1,40 @@
-\documentclass[border=6mm]{standalone}
-\usepackage[utf8]{inputenc}                   % 替换你正在使用的编码
-\usepackage{CJKutf8}
 
-\usepackage[T1]{fontenc}
-\usepackage{inconsolata}
-\usepackage{xcolor}
-\definecolor{bluekeywords}{RGB}{181,19,154}
-\definecolor{greencomments}{rgb}{0,0.5,0}
-\definecolor{redstrings}{rgb}{0.9,0,0}
-
-\usepackage{listings}
-\lstset{language=C++,
-  showspaces=false,
-  showtabs=false,
-  breaklines=true,
-  showstringspaces=false,
-  breakatwhitespace=true,
-  escapeinside={(*@}{@*)},
-  commentstyle=\color{greencomments},
-  keywordstyle=\color{bluekeywords},
-  stringstyle=\color{redstrings},
-  basicstyle=\ttfamily,
-  escapechar=`,
-  extendedchars=false,
-  breaklines=false,
-  % frame = trbl,
-  numbers=left, 
-  % numbersep=2pt,
-  numberstyle=\small \color{gray},
-  
-}
-
-\begin{document}
 \begin{CJK}{UTF8}{gbsn}
 \begin{lstlisting}
 class TreeNode{
-    
-private:
+  private:
     TreeNode * parent; // `\color{greencomments}父节点的指针`
     vector<TreeNode *> children; // `\color{greencomments}子节点的指针`
     int id;             // `\color{greencomments}节点id`
-    int label;          // `\color{greencomments}`
-    int pairId;
-    
-public:
+    string label;          // `\color{greencomments}叶节点标识，非叶节点则为空`
+    int pairId;           // `\color{greencomments}对应节点id`
+
+  public:
     // `\color{greencomments}TreeNode的构造函数与析构函数`
     TreeNode();
     TreeNode(int id);
-    TreeNode(int id,int label);
     TreeNode(int id,int label,int pairId);
-    TreeNode(TreeNode *p);
+    TreeNode(TreeNode *p); // `\color{greencomments}拷贝构造函数`
     ~TreeNode();
-    
-    void AddChild(TreeNode *pChild);
-    void SetId(int x) {id = x;}
-    void SetLabel(const int str) {label = str;}
-    void SetPairId(const int id) { pairId = id;}
-    bool IsLeaf() const { return children.size() == 0;}
-    bool IsRtLeaf() const { return pairId != -1;}
-    bool Is2ndRtLeaf();
-    bool IsRoot() const { return parent == NULL;}
-    bool IsSibling(const TreeNode * p) const ;
-    void removeChild(TreeNode * p);
-    int GetChildrenSize() { return (int)children.size();}
-    TreeNode * GetChild(int i) { return children[i];}
-    TreeNode * GetParent() { return parent;}
+
+    void AddChild(TreeNode *pChild);  // `\color{greencomments}添加子节点`
+    void RemoveChild(TreeNode * p);   // `\color{greencomments}删除子节点`
+    void SetId(int x);      
+    void SetLabel(const int str);
+    void SetPairId(const int id);
+    int GetId();
+    int GetLablel();
+    int GetPairId();    
+    int GetChildrenSize();
+    TreeNode * GetChild(int i);
+    TreeNode * GetParent();
+    TreeNode * GetRoot();    
     TreeNode * GetSiblingNode();
-    TreeNode * GetRoot();
-    int GetId() { return id;}
-    int GetLablel() { return label;}
-    int GetPairId() { return pairId;}
-    string ToString();
-    
-    TreeNode * Clone(); // `\color{greencomments}克隆以当前的为根的子树`
+    bool IsLeaf();  // `\color{greencomments}若是叶节点返回true，否则返回false`
+    bool IsRtLeaf();  // `\color{greencomments}若节点已配对则返回true，否则返回false`
+    bool IsRoot();  // `\color{greencomments}返回该节点所在子树的根节点`
+    bool IsSibling(const TreeNode * p); // `\color{greencomments}判断与另一节点是否是兄弟节点`
+    string ToString();  // `\color{greencomments}若是叶节点则返回标识，否则返回空`
 };
 \end{lstlisting}
 \end{CJK}
-\end{document}

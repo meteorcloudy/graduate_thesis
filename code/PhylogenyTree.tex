@@ -1,0 +1,39 @@
+
+\begin{CJK}{UTF8}{gbsn}
+\begin{lstlisting}
+class PhylogenyTree{    
+  private:
+    vector<TreeNode *> roots;
+    unordered_map<int,TreeNode *> idMap;    // `\color{greencomments}节点id映射到节点指针`
+    unordered_map<string,TreeNode *> labelMap;  /* `\color{greencomments}节点label映射到节点`
+                                                 `\color{greencomments}指针，非叶节点则不存在`*/
+    void BuildMaps();   // `\color{greencomments}遍历森林，生成idMap和labelMap`
+  public:
+    PhylogenyTree();
+    PhylogenyTree(PhylogenyTree * tree);   // `\color{greencomments}拷贝构造函数，复制另一棵树`
+    ~PhylogenyTree();
+
+    void BuildByNewick(string newickStr);   // `\color{greencomments}根据Newick格式构造进化树`
+    TreeNode * GetRootNode(int k);  // `\color{greencomments}获取第k个根节点`
+    TreeNode * GetNodeById(int id);
+    TreeNode * GetNodeByLabel(int label);
+    int GetLabeledNodeNum();    // `\color{greencomments}获取被标记节点数`
+    int GetNodeNum();   // `\color{greencomments}获取节点总数`
+    int GetRootNum();   // `\color{greencomments}获取根节点数`
+    vector<TreeNode *> GetAllNode();    
+    vector<TreeNode *> GetAllLabeledNode();
+    vector<TreeNode *> GetAllPairedNode();
+
+    void AddRoot(TreeNode * p); // `\color{greencomments}添加根节点，相当于添加一棵子树`
+    void RemoveRoot(TreeNode * p);  // `\color{greencomments}删除根节点，相当于删除一棵子树`
+    void Contract();    // `\color{greencomments}对所有子树进行收缩操作`
+    void DeleteEdge(int nid); // `\color{greencomments}删除某节点的父边`
+    void DeleteEdges(vector<int> &nids); // `\color{greencomments}删除一些节点的父边`
+    void EraseNode(TreeNode * p);  // `\color{greencomments}将节点从idMap和labelMap中移除`
+    
+    void randomSPR(int k);  // `\color{greencomments}随机进行k次rSPR操作（生成随机数据用）`
+    string ToString();  // `\color{greencomments}将树或森林表示成Newick格式的字符串`
+};
+
+\end{lstlisting}
+\end{CJK}

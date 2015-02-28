@@ -1,13 +1,9 @@
 % !Mode:: "TeX:UTF-8"
 
-
-\chapter{数据结构设计及算法实现}
-
-% \pic[htbp]{TreeNode}{width=0.9\textwidth}{code/TreeNode.pdf}
 \lstset{language=C++,
   showspaces=false,
   showtabs=false,
-  breaklines=true,
+  % breaklines=true,
   showstringspaces=false,
   breakatwhitespace=true,
   escapeinside={(*@}{@*)},
@@ -17,7 +13,7 @@
   basicstyle=\linespread{1} \ttfamily,
   escapechar=`,
   extendedchars=false,
-  breaklines=false,
+  breaklines=true,
   % frame = trbl,
   numbers=left, 
   % numbersep=2pt,
@@ -25,52 +21,39 @@
   columns=fullflexible
 }
 
-\begin{CJK}{UTF8}{gbsn}
-\begin{lstlisting}
-class TreeNode{
-    
-private:
-    TreeNode * parent; // `\color{greencomments}父节点的指针`
-    vector<TreeNode *> children; // `\color{greencomments}子节点的指针`
-    int id;             // `\color{greencomments}节点id`
-    int label;          // `\color{greencomments}`
-    int pairId;
-    
-public:
-    // `\color{greencomments}TreeNode的构造函数与析构函数`
-    TreeNode();
-    TreeNode(int id);
-    TreeNode(int id,int label);
-    TreeNode(int id,int label,int pairId);
-    TreeNode(TreeNode *p);
-    ~TreeNode();
-    
-    void AddChild(TreeNode *pChild);
-    void SetId(int x) {id = x;}
-    void SetLabel(const int str) {label = str;}
-    void SetPairId(const int id) { pairId = id;}
-    bool IsLeaf() const { return children.size() == 0;}
-    bool IsRtLeaf() const { return pairId != -1;}
-    bool Is2ndRtLeaf();
-    bool IsRoot() const { return parent == NULL;}
-    bool IsSibling(const TreeNode * p) const ;
-    void removeChild(TreeNode * p);
-    int GetChildrenSize() { return (int)children.size();}
-    TreeNode * GetChild(int i) { return children[i];}
-    TreeNode * GetParent() { return parent;}
-    TreeNode * GetSiblingNode();
-    TreeNode * GetRoot();
-    int GetId() { return id;}
-    int GetLablel() { return label;}
-    int GetPairId() { return pairId;}
-    string ToString();
-    
-    TreeNode * Clone(); // `\color{greencomments}克隆以当前的为根的子树`
-};
-\end{lstlisting}
-\end{CJK}
+\chapter{数据结构设计及算法实现}
+为了验证上一章所提出的参数算法的性能，我们需要将算法用一种编程语言实现。考虑到编程语言的复杂性和效率，我们选用C++语言，利用其面向对象的程序设计方法来实现该算法。精心设计的数据结构可以大大降低编程的复杂度并且提高程序的运行效率。因此选取合适的数据结构是本章的首要任务。
 
+\section{数据结构设计}
 
+\subsection{树节点}
+在设计树节点的数据结构时，需要考虑到能够方便地访问其父节点，子节点。为了简便与扩展性，将子节点指针用vector存储，实际运行中容器的大小不会超过2。
+
+同时，因为两棵进化树的节点需要进行匹配，如果两棵进化树中存在同构的子树，便将两子树的根节点配对，记录对方的节点id为pairId，若未配对则pairId为-1。
+
+其次，定义此类相关的存取方法和一些辅助方法。\\
+\textbf{TreeNode类定义如下}：
+\input{code/TreeNode}
+
+\subsection{进化树}
+考虑到需要同时表示进化树和进化树森林，我们将PhylogenyTree类定义成包含多个根节点的森林，将所有的根节点用vector保存。
+
+算法实现过程中需要通过节点id或label访问节点的操作，用unordered\_map为容器用idMap和labelMap进行映射，unordered\_map内部原理是哈希表，单次映射操作复杂度为$O(1)$。
+
+最后定义各种相关的读写方法和辅助方法，其中比较重要的有Contract、DeleteEdge、DeleteEdges和randomSPR等方法，这些都是进化树的几个基本操作，详见注释。
+\\ \textbf{PhylogenyTree类定义如下}：
+\input{code/PhylogenyTree}
+
+\section{算法实现}
+
+从上一章的算法描述部分可以看出，我们的算法实际上是通过限制深度的深度优先搜索算法来寻找解，并且在每次搜索时判断当前状态所属情况，然后进行分类讨论。因此，我们将不同情况分为不同的模块，模块之间可以互相调用，这样即理清了程序的结构也增加了代码重用，使代码结构清晰简洁明了。
+
+同样，为了遵循面相对象的设计方式，我们用FPTsolver类来实现算法的主体。将每种情况用一个方法实现，并定义相关的辅助方法。由于篇幅限制，在这里只给出类FPTsolver的定义和递归主体函数MAF的具体实现方法。MAF方法主要完成了算法的前四步，然后寻找可以处理的一组点进行情况判定，并调用相应的方法进行处理。完整源代码详见\href{https://github.com/meteorcloudy/FPT_faster}{FPT\_faster}。
+
+$ $\\ \textbf{FPTsolver类定义如下}：
+\input{code/FPTsolver}
+$ $\\\textbf{MAF函数的实现如下}：
+\input{code/MAF}
 
 
 

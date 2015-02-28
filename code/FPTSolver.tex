@@ -1,0 +1,72 @@
+\begin{CJK}{UTF8}{gbsn}
+\begin{lstlisting}
+class FPTSolver{
+private:
+    PhylogenyTree * ans;    // `\color{greencomments}保存最终的最大一致森林解`
+    void FindPendantNodes(TreeNode * p, TreeNode * r,
+                          vector<int> &nids); 
+                        // `\color{greencomments}寻找p到其祖先r路径上的悬挂节点`
+    bool MergePair(PhylogenyTree *T1, PhylogenyTree *F2,
+                   TreeNode * a,TreeNode * b);
+                    // `\color{greencomments}在$T_1,F_2$中合并a,b两个叶节点`
+    bool MergeSiblingNodes(PhylogenyTree * T1, PhylogenyTree * F2);
+                  // `\color{greencomments}合并$T_1,F_2$中所有能合并的叶节点，若不存在则返回false，否则返回true`
+    bool MoveTree(PhylogenyTree * F, PhylogenyTree * T1,
+                  PhylogenyTree * F2); /* `\color{greencomments}将$F_2$中所有合并完的子树移动`
+                            `\color{greencomments}到$F$中，若不存在则返回false，否则返回true`*/
+    Group FindGroup(PhylogenyTree * tree);  /*`\color{greencomments}需找一组符合要求的叶节点，`
+                                            `\color{greencomments}可能返回3点或4点两种情况`*/
+    bool Case_1(PhylogenyTree * F,PhylogenyTree * T1,
+                PhylogenyTree * F2, int k, Group &grp2);
+    bool Case_1_1(PhylogenyTree * F,PhylogenyTree * T1,
+                  PhylogenyTree * F2, int k,Group & grp2);
+    bool Case_1_2(PhylogenyTree * F,PhylogenyTree * T1,
+                  PhylogenyTree * F2, int k,int nid);
+    bool Case_1_3(PhylogenyTree * F,PhylogenyTree * T1,
+                  PhylogenyTree * F2, int k,Group & grp2,
+                  vector<int> & pedant);
+    bool Case_1_4(PhylogenyTree * F,PhylogenyTree * T1,
+                  PhylogenyTree * F2, int k, Group &grp2,
+                  vector<int> & pedant);
+    bool Case_1_4_1(PhylogenyTree * F,PhylogenyTree * T1,
+                    PhylogenyTree * F2, int k,int nid);
+    bool Case_1_4_2(PhylogenyTree * F,PhylogenyTree * T1,
+                    PhylogenyTree * F2, int k,Group & grp2,
+                    vector<int> & pedant);
+    bool Case_1_4_3(PhylogenyTree * F,PhylogenyTree * T1,
+                    PhylogenyTree * F2, int k,Group & grp2,
+                    vector<int> & pedant_ab,vector<int> & pedant_ac);
+    bool Case_2_1(PhylogenyTree * F,PhylogenyTree * T1,
+                  PhylogenyTree * F2, int k, int nid1, int nid2);
+    bool Case_2_2(PhylogenyTree * F,PhylogenyTree * T1,
+                  PhylogenyTree * F2, int k, vector<int> & pedant_one);
+    bool Case_2_3(PhylogenyTree * F,PhylogenyTree * T1,
+                  PhylogenyTree * F2,int k,Group &grp2,TreeNode * Rab);
+    bool Case_2_4(PhylogenyTree * F,PhylogenyTree * T1,
+                  PhylogenyTree * F2, int k, Group &grp2);
+    bool MAF(PhylogenyTree * F,PhylogenyTree * T1,
+             PhylogenyTree * F2, int k);    // `\color{greencomments}递归主函数`
+public:
+    bool MAF_K(PhylogenyTree * T1, PhylogenyTree * T2,int k); 
+                                // `\color{greencomments}判断$T_1,T_2$的rSPR距离是否小于k`
+    int MAF_Calc(PhylogenyTree * T1, PhylogenyTree * T2);
+                                // `\color{greencomments}通过枚举计算$T_1,T_2$的rSPR距离`
+    PhylogenyTree * GetMAF();   // `\color{greencomments}获取最终的最大一致森林解`
+};
+\end{lstlisting}
+\end{CJK}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
