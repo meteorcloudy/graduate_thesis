@@ -2,3 +2,91 @@
 % !Mode:: "TeX:UTF-8"
 
 \chapter{实验分析}
+
+实验分析同样也是算法研究的一个重要部分，文章我们利用随机生成的数据和真是的生物数据来测试算法的改进效果。为了尽量去除因为算法实现方式不同而造成的效率差异，我们在完全相同的数据结构和程序框架下重新实现了Whidden原本的参数算法。为了方便，我们将此程序成为FPT，而将改进后的程序称作FPT\_faster。实验结果显示，FPT\_faster在效率较之前有显著的提升。
+
+两个算法均在以下环境中编译运行并进行测试。
+\begin{center}
+\captionof{table}{实验环境}
+\begin{tabular}{ c c }
+	\hline
+  操作系统 & MAC OS X 10.10.2  \\
+  处理器 & 2.4GHz Intel Core i5  \\
+  内存 & 4GB 1600MHz DDR3  \\
+  编译器 & Apple LLVM version 6.0 \\
+	\hline
+\end{tabular}
+\end{center}
+
+\section{随机数据测试}
+
+首先我们按照如下步骤生成随机数据：
+\begin{enumerate}
+	\item 设$R$为一些子树的根节点集合，初始时$R$为$n$个叶节点的集合。
+	\item 在$R$中随机选择两个节点作为兄弟节点合并，并将它们移除$R$，将它们的父节点加入$R$。
+	\item 重复第二步，直到$R$中只有$1$个节点，将该节点为根的树作为$T_1$。
+	\item 在$T_1$上随机进行$k$此rSPR操作，得到$T_2$。
+\end{enumerate}
+
+按照上述方法，我们可以得到两棵叶节点数为$n$，rSPR距离不大于$k$的两棵进化树$T_1,T_2$。
+
+为了测试随rSPR距离增加算法运行时间的变化，首先生成了叶节点数均为100，rSPR距离由0递增至40的100对进化树。FPT和FPT\_faster的运行结果如图\ref{figure_1}所示。因为算法时间复杂度为指数级增长，我们对纵坐标时间做了对数处理。由图可以看出，FPT在rSPR距离增大到30以上时已经很难在可接受的时间范围内找到最优解。而FPT\_faster则可以在更短的时间内找到更复杂数据的解。实际上，对于rSPR距离不大于30的情况，FPT\_faster基本都能在1分钟内给出最优解。
+
+\pic[htbp]{叶节点数均为100，rSPR距离从0到40}{width=0.8\textwidth}{figure_1}
+
+两种算法实际上一个共同的特点是根据进化树的不同形态划分为不同情况，进而采取相应地策略。而不同的策略，意味着不同的复杂度，因此算法实际运行的时间与在搜索过程中每种情况所遇到的次数有很大关系。对于每种策略，我们用第三章的分析方法解出一个特征根$\alpha$，$\alpha$的值越小意味着该情况复杂度越小。同时，我们对FPT和FPT\_faster分别统计了所有随机数据计算过程中每种情况的占比。（如表5-2，表5-3）由表可以看出，在FPT中三种情况的分布相对均匀，各占三分之一。这也意味着有三分之一的情况是该算法的最坏情况。而在FPT\_faster中，不仅最坏情况的复杂度得以降低，而且最坏情况的占比也大大减小，有超过90\%的情况的$\alpha$值小于等于$2$。因此，算法运行的时间理所当然地大大减少了。
+
+\begin{center}
+\begin{table}[htpb]
+\parbox{.34\linewidth}{
+\centering
+\captionof{table}{FPT各情况复杂度及分布}
+\begin{tabular}{ c c c}
+	\hline
+  		情况 & $\alpha$ & 占比\\  \hline
+  		Case 1 & $2$ & 36.07\% \\
+  		Case 2 & $1$ & 31.45\%\\
+  		Case 3 & $2.42$ & 32.48\% \\
+	\hline
+\end{tabular}
+}
+\hfill
+\parbox{.6\linewidth}{
+\centering
+\captionof{table}{FPT\_faster各情况复杂度及分布}
+\begin{tabular}{ c c c | c c c }
+	\hline
+  		情况 & $\alpha$ & 占比 & 情况 & $\alpha$ & 占比\\  \hline
+  		Case 1.1 & $2$ & 59.26\% & Case 1.4.3 & $2.15$ &8.52\%  \\
+  		Case 1.2 & $1$ & 12.08\% & Case 2.1 & $2$ & 3.82\% \\
+  		Case 1.3 & $2$ & 13.51\% & Case 2.2 & $1$ & 2.03\% \\
+  		Case 1.4.1 & $1$ & 0.38\%  & Case 2.3 & $2.17$ & 0.11\% \\
+  		Case 1.4.2 & $1.73$ & 0.00\% & Case 2.4 & $2.27$ & 0.30\% \\
+	\hline
+\end{tabular}
+}
+\end{table}
+\end{center}
+
+
+\section{生物数据测试}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
