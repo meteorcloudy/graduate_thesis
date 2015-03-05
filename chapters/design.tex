@@ -113,7 +113,7 @@ C(k) \le 2C(k-1) + C(k-2)
 \begin{enumerate}
 	\item 如果$x \in \emptyset$，即$a$最终为孤立节点，那么必须删除$e_a$。删除后在$T_1$中$b,c$为兄弟，而在$F_2$中$b,c$不连通，此时出现\textbf{情况\ref{case1}}，可以有两种选择，删除$e_b$或者$e_c$。因此分别调用两次递归函数，$MAF(T_1,F_2-\{e_a,e_b\},k-2)$和$MAF(T_1,F_2-\{e_a,e_c\},k-2)$。
 	\item 如果$x = b$，则需删除$F_2$中$a$到$b$之间所有的悬挂节点的父边$E_{P(a,b)}$。因此只需调用一次递归函数，$MAF(T_1,F_2-E_{P(a,b)},k-|P(a,b)|)$。
-	\item 如果$x \notin \emptyset$且$x \neq b$，由$F_2$的结构可知必须删除$b$的父边$e_b$。删除后在$T_1$中$a,c$为兄弟，而在$F_2$中$a,c$不连通，此时出现\textbf{情况\ref{case1}}，可以有两种选择，删除$e_a$或者$e_c$。因此分别调用两次递归函数，$MAF(T_1,F_2-\{e_a,e_b\},k-2)$和$MAF(T_1,F_2-\{e_b,e_c\},k-2)$。$MAF(T_1,F_2-\{e_a,e_b\},k-2)$与1中重复，可省略。\\
+	\item 如果$x \notin \emptyset$且$x \neq b$，由$T_1$的结构可知必须删除$b$的父边$e_b$。删除后在$T_1$中$a,c$为兄弟，而在$F_2$中$a,c$不连通，此时出现\textbf{情况\ref{case1}}，可以有两种选择，删除$e_a$或者$e_c$。因此分别调用两次递归函数，$MAF(T_1,F_2-\{e_a,e_b\},k-2)$和$MAF(T_1,F_2-\{e_b,e_c\},k-2)$。$MAF(T_1,F_2-\{e_a,e_b\},k-2)$与1中重复，可省略。\\
 \end{enumerate}
 综上，对于\textit{Case 1.3}，我们需要调用四次递归函数：
 \begin{center}
@@ -139,8 +139,8 @@ $ $\\
 \begin{center}
 $MAF(T_1,F_2,k) = \left\{
 \begin{array}{lcl}
-         MAF(T_1,F_2-\{e_b\},k-2) & \mbox{for} & |P(a,c)|=0\\ 
-         MAF(T_1,F_2-\{e_a\},k-2) & \mbox{for} & |P(b,c)|=0\\
+         MAF(T_1,F_2-\{e_b\},k-1) & \mbox{for} & |P(a,c)|=0\\ 
+         MAF(T_1,F_2-\{e_a\},k-1) & \mbox{for} & |P(b,c)|=0\\
 \end{array}
 \right.$
 \end{center}
@@ -157,7 +157,7 @@ $  $\\
 	\item 如果$x \notin \emptyset$且$x \notin \{b,c\}$，则需要删除$e_b,e_c$。调用一次递归函数，$MAF(T_1,F_2-\{e_b,e_c\},k-2)$。
 \end{enumerate}
 
-然而，通过观察，实际上我们可以发现$x=b$和$x=c$两种情况处理后的$T_1,F_2$实际上是等价的。）对于如图\ref{case_1_4_2_eq}的两片森林，只需要简单地交换节点$b,c$的标识即可让它们等价，而这并不会影响最终MAF的大小。
+然而，通过观察，实际上我们可以发现$x=b$和$x=c$两种情况处理后的$T_1,F_2$实际上是等价的。对于如图\ref{case_1_4_2_eq}的两片森林，只需要简单地交换节点$b,c$的标识即可让它们等价，而这并不会影响最终MAF的大小。
 \pic[htbp]{$x=b$和$x=c$两种情况处理后的$F_2$}{width=0.4\textwidth}{case_1_4_2_eq}
 
 因此，我们可以在$x=b$和$x=c$两种选择中省略一种，不妨省略$x=c$。而对于图\ref{case_1_4_2}~(b)的情况，我们交换$a,b$所代表的节点后可以用完全相同的方法处理。
@@ -200,7 +200,7 @@ $\left\{
 \begin{center}
 $MAF(T_1,F_2,k) = \left\{
 \begin{array}{lr}
-         MAF(T_1,F_2-\{e_a\},k-2) & \mbox{or}\\ 
+         MAF(T_1,F_2-\{e_a\},k-1) & \mbox{or}\\ 
          MAF(T_1,F_2-E_{P(a,b)},k-|P(a,b)|) & \mbox{or}\\
          MAF(T_1,F_2-E_{P(a,c) \cup \{b\}},k-|P(a,c) \cup \{b\}|) & \mbox{or}\\
          MAF(T_1,F_2-\{e_b,e_c\},k-2) & 
