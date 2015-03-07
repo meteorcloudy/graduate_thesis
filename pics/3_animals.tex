@@ -1,0 +1,81 @@
+\documentclass[border=0.125cm]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}                   % 替换你正在使用的编码
+\usepackage{CJKutf8}
+
+\usetikzlibrary{decorations.pathmorphing}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{shapes.geometric,arrows,fit,matrix,positioning}
+\tikzset{main node/.style={circle,fill=black!20,draw,minimum size=3.5mm,inner sep=0pt},
+         every node/.style={circle,fill=black,draw,minimum size=1mm,inner sep=0pt,label distance=-1mm},
+         subtree/.style={isosceles triangle,fill=blue!20,draw,minimum size=4mm,inner sep=0pt,shape border rotate=90},
+         edge label/.style = {rectangle,draw=none,fill=none}
+}
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}  
+\begin{tikzpicture}[-,>=stealth', 
+level 1/.style={sibling distance = 15mm},
+level distance = 1cm, 
+scale=0.6,
+transform shape]
+\node (0) {}
+    child{
+        [sibling distance = 10mm] node (1) {}
+            child{
+                node (2) {}
+            }
+            child{
+                node (3) {}
+            }
+    }
+    child{
+        node (4) {}
+    }
+;
+
+\node [edge label, below=2mm, align=flush center] at (2){\footnotesize{斑驴}};
+\node [edge label, below=2mm, align=flush center] at (3){\footnotesize{驴}};
+\node [edge label, below=2mm, align=flush center] at (4){\footnotesize{斑马}};
+\node [edge label, xshift = -2mm, below=27mm, align=flush center] at (0){
+        \scriptsize{(a)}}; 
+
+\end{tikzpicture}
+~~~
+\begin{tikzpicture}[-,>=stealth', 
+level 1/.style={sibling distance = 15mm},
+level distance = 1cm, 
+scale=0.6,
+transform shape]
+\node (0) {}
+    child{
+        [sibling distance = 10mm] node (1) {}
+            child{
+                node (2) {}
+            }
+            child{
+                node (3) {}
+            }
+    }
+    child{
+        node (4) {}
+    }
+;
+
+\node [edge label, below=2mm, align=flush center] at (2){\footnotesize{斑驴}};
+\node [edge label, below=2mm, align=flush center] at (3){\footnotesize{斑马}};
+\node [edge label, below=2mm, align=flush center] at (4){\footnotesize{驴}};
+\node [edge label, xshift = -2mm, below=27mm, align=flush center] at (0){
+        \scriptsize{(b)}}; 
+\end{tikzpicture}
+\end{CJK}
+
+
+\end{document}
+
+
+
+
+
+

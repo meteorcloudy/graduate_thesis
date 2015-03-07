@@ -18,7 +18,7 @@
 \end{tabular}
 \end{center}
 
-\section{随机数据测试}
+\section{完全随机数据测试}
 
 首先我们按照如下步骤生成随机数据：
 \begin{enumerate}
@@ -32,7 +32,7 @@
 
 为了测试随rSPR距离增加算法运行时间的变化，首先生成了叶节点数均为100，rSPR距离由0递增至40的41对进化树。FPT和FPT\_faster的运行结果如图\ref{figure_1}所示。因为算法时间复杂度为指数级增长，我们对纵坐标时间做了对数处理。由图可以看出，FPT在rSPR距离增大到30以上时已经很难在可接受的时间范围内找到最优解。而FPT\_faster则可以在更短的时间内找到更复杂数据的解。实际上，对于rSPR距离不大于30的情况，FPT\_faster基本都能在1分钟内给出最优解。
 
-\pic[htbp]{叶节点数均为100，rSPR距离从0到40}{width=0.8\textwidth}{figure_1}
+\pic[htbp]{叶节点数均为100，rSPR距离从0到40}{width=0.85\textwidth}{figure_1}
 
 两种算法实际上一个共同的特点是根据进化树的不同形态划分为不同情况，进而采取相应地策略。而不同的策略，意味着不同的复杂度，因此算法实际运行的时间与在搜索过程中每种情况所遇到的次数有很大关系。对于每种策略，我们用第三章的分析方法解出一个特征根$\alpha$，$\alpha$的值越小意味着该情况复杂度越小。同时，我们对FPT和FPT\_faster分别统计了所有随机数据计算过程中每种情况的占比。（如表5-2，表5-3）由表可以看出，在FPT中三种情况的分布相对均匀，各占三分之一。这也意味着有三分之一的情况是该算法的最坏情况。而在FPT\_faster中，不仅最坏情况的复杂度得以降低，而且最坏情况的占比也大大减小，有超过90\%的情况的$\alpha$值小于等于$2$。因此，算法运行的时间理所当然地大大减少了。
 
@@ -68,7 +68,47 @@
 \end{table}
 \end{center}
 
+\section{特殊随机数据测试}
+本节采用的随机数据来自于\cite{hickey2008spr}，是一组人工构造的进化树。首先，\cite{hickey2008spr}的作者从鸟类超级树项目（bird super tree project）得到一颗具有5281个物种的真实进化树。然后，随机地在该树上做rSPR操作得到50棵进化树，并且保证这些rSPR操作是不累积的，即若一棵子树进行过rSPR操作，那么其内部的节点则不再进行rSPR操作。这些进化树与原始进化树的距离从1到50不等。利用这组数据我们进行了同上一节类似的测试分析，得到了一些与完全随机测试很不同的结果。
 
+\pic[htbp]{叶节点数均为5281，rSPR距离从1到50}{width=0.88\textwidth}{figure_3}
+
+首先，这些进化树之间的rSPR距离分布在1~50之间，与完全随机数据相近。然而从图\ref{figure_1}可以看出，对于相同的rSPR距离，本组数据的运行时间无论是FPT或FPT\_faster都大大减少。实际上，当rSPR距离为40时，计算对应的完全随机数据耗时高达数小时，而计算生物数据仅需几十秒。具体的原因，可以从后面的分析看出。当我们统计FPT和FPT\_faster在计算特殊随机数据时不同情况所占比例时，发现它们几乎全部集中在Case 2、Case 1.4.1、Case 1.2、Case 2.2，而这些情况都等价于Whidden算法中的最好情况\ref{case2}。因此整个搜索树的规模大大减小，运行时间也相应缩短。即便如此，从图\ref{figure_1}仍然可以看出FPT\_faster的运行时间普遍只有FPT的一半，这是因为它能更好地发现上述最好情况，从而更有效地减小搜索树的大小。
+
+
+\begin{center}
+\begin{table}[htpb]
+\parbox{.34\linewidth}{
+\centering
+\captionof{table}{FPT各情况复杂度及分布}
+\begin{tabular}{ c c c}
+  \hline
+      情况 & $\alpha$ & 占比\\  \hline
+      Case 1 & $2$ & 0.00\% \\
+      Case 2 & $1$ & 97.22\%\\
+      Case 3 & $2.42$ & 2.78\% \\
+  \hline
+\end{tabular}
+}
+\hfill
+\parbox{.6\linewidth}{
+\centering
+\captionof{table}{FPT\_faster各情况复杂度及分布}
+\begin{tabular}{ c c c | c c c }
+  \hline
+      情况 & $\alpha$ & 占比 & 情况 & $\alpha$ & 占比\\  \hline
+      Case 1.1 & $2$ & 0\% & Case 1.4.3 & $2.15$ &0\%  \\
+      Case 1.2 & $1$ & 93.07\% & Case 2.1 & $2$ & 0\% \\
+      Case 1.3 & $2$ & 0\% & Case 2.2 & $1$ & 5.05\% \\
+      Case 1.4.1 & $1$ & 1.88\%  & Case 2.3 & $2.17$ & 0\% \\
+      Case 1.4.2 & $1.73$ & 0.00\% & Case 2.4 & $2.27$ & 0\% \\
+  \hline
+\end{tabular}
+}
+\end{table}
+\end{center}
+
+$ $\\
 \section{生物数据测试}
 
 为了证明我们的算法对于真实的生物数据同样有效，我们使用\cite{wu2009practical}中所分析过的一组数据。这组数据来源于GPWG（Grass Phylogeny Working Group, 2001）的对禾本科植物的研究。通过对所得数据的适当处理数据，得到了57组不同的进化树对。我们分别用FPT\_faster和FPT进行测试，计算了相同rSPR距离所需的平均时间。（如表5-4）这组数据的rSPR距离分布整体比随机数据要小，因此运行时间也大大减小。但仍然可以看出FPT\_faster可以在更短的时间内找到最优解，并且这种优势随rSPR距离的增大而越发明显。
